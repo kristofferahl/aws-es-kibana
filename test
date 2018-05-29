@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+declare endpoint=''
+declare access_key_id=''
+declare secret_access_key=''
+declare basic_auth_user='kibana'
+declare basic_auth_password='kibana'
+
+docker run --rm \
+  -e AWS_ACCESS_KEY_ID="${access_key_id:?}" \
+  -e AWS_SECRET_ACCESS_KEY="${secret_access_key:?}" \
+  -e USER="${basic_auth_user:?}" \
+  -e PASSWORD="${basic_auth_password:?}" \
+  -p 9200:9200 \
+  kristofferahl/aws-es-kibana:latest \
+  "${endpoint:?}"

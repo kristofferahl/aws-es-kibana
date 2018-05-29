@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+declare commit
+declare version
+
+commit="$(git rev-parse --verify HEAD)"
+version="1.0.0-${commit:0:8}"
+
+docker build -t "kristofferahl/aws-es-kibana:${version:?}" .
+docker tag "kristofferahl/aws-es-kibana:${version:?}" kristofferahl/aws-es-kibana:latest
