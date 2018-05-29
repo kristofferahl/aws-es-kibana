@@ -1,16 +1,28 @@
 #!/usr/bin/env bash
 
-declare endpoint=''
-declare access_key_id=''
-declare secret_access_key=''
-declare basic_auth_user='kibana'
-declare basic_auth_password='kibana'
+export ENDPOINT
+export ACCESS_KEY_ID
+export SECRET_ACCESS_KEY
+export BASIC_AUTH_USER
+export BASIC_AUTH_PASSWORD
+
+ENDPOINT=''
+ACCESS_KEY_ID=''
+SECRET_ACCESS_KEY=''
+BASIC_AUTH_USER='kibana'
+BASIC_AUTH_PASSWORD='kibana'
+
+if [[ -f ./.env ]]; then
+  echo "Sourcing .env file"
+  # shellcheck disable=SC1091
+  source ./.env
+fi
 
 docker run --rm \
-  -e AWS_ACCESS_KEY_ID="${access_key_id:?}" \
-  -e AWS_SECRET_ACCESS_KEY="${secret_access_key:?}" \
-  -e USER="${basic_auth_user:?}" \
-  -e PASSWORD="${basic_auth_password:?}" \
+  -e AWS_ACCESS_KEY_ID="${ACCESS_KEY_ID:?}" \
+  -e AWS_SECRET_ACCESS_KEY="${SECRET_ACCESS_KEY:?}" \
+  -e USER="${BASIC_AUTH_USER:?}" \
+  -e PASSWORD="${BASIC_AUTH_PASSWORD:?}" \
   -p 9200:9200 \
   kristofferahl/aws-es-kibana:latest \
-  "${endpoint:?}"
+  "${ENDPOINT:?}"
