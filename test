@@ -12,10 +12,15 @@ SECRET_ACCESS_KEY=''
 BASIC_AUTH_USER='kibana'
 BASIC_AUTH_PASSWORD='kibana'
 
-if [[ -f ./.env ]]; then
-  echo "Sourcing .env file"
-  # shellcheck disable=SC1091
-  source ./.env
+declare name="${1:?'A name must be given (used for .env files)'}"
+declare dotenv_file="./.env.${name:?}"
+if [[ -f ${dotenv_file:?} ]]; then
+  echo "Sourcing ${dotenv_file:?} file"
+  # shellcheck source=/dev/null
+  source "${dotenv_file:?}"
+else
+  echo "No .env file found! (${dotenv_file:?})"
+  exit 1
 fi
 
 docker run --rm \
